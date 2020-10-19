@@ -1,55 +1,63 @@
 import random
 
-board = [' ' for _ in range(9)]
+TTTBoard = [' ' for _ in range(9)]
 
 
 def insertAtPosition(letter, pos):
-    board[pos] = letter
+    TTTBoard[pos] = letter
 
 
 def printBoard():
     print("     |     |     ")
-    print("  " + board[0] + "  |  " + board[1] + "  |  " + board[2] + "  ")
+    print("  " + TTTBoard[0] + "  |  " + TTTBoard[1] + "  |  " + TTTBoard[2] + "  ")
     print("     |     |     ")
     print("-----------------")
     print("     |     |     ")
-    print("  " + board[3] + "  |  " + board[4] + "  |  " + board[5] + "  ")
+    print("  " + TTTBoard[3] + "  |  " + TTTBoard[4] + "  |  " + TTTBoard[5] + "  ")
     print("     |     |     ")
     print("-----------------")
     print("     |     |     ")
-    print("  " + board[6] + "  |  " + board[7] + "  |  " + board[8] + "  ")
+    print("  " + TTTBoard[6] + "  |  " + TTTBoard[7] + "  |  " + TTTBoard[8] + "  ")
     print("     |     |     ")
     print("")
 
 
 def posIsFree(pos):
-    return board[pos] == ' '
+    return TTTBoard[pos] == ' '
 
 
 def isBoardFull():
-    return board.count(' ') == 0
+    return TTTBoard.count(' ') == 0
 
 
-def isWinner(pos, move):
+def isWinner(pos, move, board=TTTBoard):
     for i in range(3):
         if board[(i + pos) % 3] != move:
-            return False
+            break
+    else:
+        return True
 
     for i in range(3):
-        if board[(i + 3 * pos) % 3] != move:
-            return False
+        if board[3 * i + pos % 3] != move:
+            break
+    else:
+        return True
 
     if pos in [0, 4, 8]:
         for i in range(3):
             if board[4 * i] != move:
-                return False
+                break
+        else:
+            return True
 
     if pos in [2, 4, 6]:
         for i in range(3):
             if board[2 * i + 2] != move:
-                return False
+                break
+        else:
+            return True
 
-    return True
+    return False
 
 
 print("Tic Tac Toe\n")
@@ -57,13 +65,13 @@ printBoard()
 
 
 def AIMove():
-    possibleMoves = [x for x in range(0, 9) if board[x] == ' ']
+    possibleMoves = [x for x in range(0, 9) if TTTBoard[x] == ' ']
     pos = 0
     for let in ['O', 'X']:
         for i in possibleMoves:
-            boardTemp = board
+            boardTemp = TTTBoard[:]
             boardTemp[i] = let
-            if isWinner(pos, let):
+            if isWinner(i, let, boardTemp):
                 pos = i
                 return pos
 
@@ -89,16 +97,22 @@ while not isBoardFull():
         insertAtPosition("X", x)
         printBoard()
         if isWinner(x, "X"):
+            print("\033[1mCongratulations \nYou Won The Game.\033[0m")
             break
 
         position = AIMove()
         insertAtPosition("O", position)
         printBoard()
         if isWinner(position, "O"):
+            print("\033[1mAI Wins The Game.\033[0m")
+            break
+
+        if isBoardFull():
+            print("\033[1mGame Resulted in Tie\033[0m")
             break
     elif not (0 <= x <= 8):
         printBoard()
         print("Oops \033[1mPosition " + str(x) + "\033[0m does not exists.\nTry Again\n")
     else:
         printBoard()
-        print("\033[1mPosition " + str(x) + "\033[0m Already Occupied By \033[1m" + str(board[x]) + "\033[0m\n")
+        print("\033[1mPosition " + str(x) + "\033[0m Already Occupied By \033[1m" + str(TTTBoard[x]) + "\033[0m\n")
