@@ -17,10 +17,10 @@ def printBoard():
     print("     |     |     ")
     print("  " + board[6] + "  |  " + board[7] + "  |  " + board[8] + "  ")
     print("     |     |     ")
-    print("\n")
+    print("")
 
 
-def safeIsFree(pos):
+def posIsFree(pos):
     return board[pos] == ' '
 
 
@@ -48,3 +48,32 @@ def isWinner(pos, move):
                 return False
 
     return True
+
+
+print("Tic Tac Toe\n")
+printBoard()
+
+
+def AIMove():
+    possibleMoves = [x for x in range(0, 9) if board[x] == ' ']
+    return 0
+
+
+while not isBoardFull():
+    print("Please Select a position to place\033[1m X \033[0m (0-8):")
+    x = int(input())
+    if 0 <= x <= 8 and posIsFree(x):
+        insertAtPosition("X", x)
+        printBoard()
+        if isWinner(x, "X"):
+            break
+
+        position = AIMove()
+        if isWinner(position, "O"):
+            break
+    elif not (0 <= x <= 8):
+        printBoard()
+        print("Oops \033[1mPosition " + str(x) + "\033[0m does not exists.\nTry Again\n")
+    else:
+        printBoard()
+        print("\033[1mPosition " + str(x) + "\033[0m Already Occupied By \033[1m" + str(board[x]) + "\033[0m\n")
