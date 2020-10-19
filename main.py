@@ -1,3 +1,5 @@
+import random
+
 board = [' ' for _ in range(9)]
 
 
@@ -56,7 +58,28 @@ printBoard()
 
 def AIMove():
     possibleMoves = [x for x in range(0, 9) if board[x] == ' ']
-    return 0
+    pos = 0
+    for let in ['O', 'X']:
+        for i in possibleMoves:
+            boardTemp = board
+            boardTemp[i] = let
+            if isWinner(pos, let):
+                pos = i
+                return pos
+
+    corner = [x for x in possibleMoves if x in [0, 2, 6, 8]]
+    if len(corner) > 0:
+        pos = random.choice(corner)
+        return pos
+
+    if 4 in possibleMoves:
+        pos = 4
+        return pos
+
+    edges = [x for x in possibleMoves if x in [1, 3, 5, 7]]
+    if len(edges) > 0:
+        pos = random.choice(edges)
+        return pos
 
 
 while not isBoardFull():
@@ -69,6 +92,8 @@ while not isBoardFull():
             break
 
         position = AIMove()
+        insertAtPosition("O", position)
+        printBoard()
         if isWinner(position, "O"):
             break
     elif not (0 <= x <= 8):
