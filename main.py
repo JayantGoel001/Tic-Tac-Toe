@@ -1,4 +1,5 @@
 import random
+from time import sleep
 
 TTTBoard = [' ' for _ in range(9)]
 
@@ -66,7 +67,6 @@ printBoard()
 
 def AIMove():
     possibleMoves = [x for x in range(0, 9) if TTTBoard[x] == ' ']
-    pos = 0
     for let in ['O', 'X']:
         for i in possibleMoves:
             boardTemp = TTTBoard[:]
@@ -99,6 +99,9 @@ while not isBoardFull():
         if isWinner(x, "X"):
             print("\033[1mCongratulations \nYou Won The Game.\033[0m")
             break
+
+        print("AI is Thinking")
+        sleep(3)
 
         position = AIMove()
         insertAtPosition("O", position)
