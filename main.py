@@ -31,39 +31,19 @@ def isBoardFull():
     return TTTBoard.count(' ') == 0
 
 
-def isWinner(pos, move, board=TTTBoard):
-    for i in range(3):
-        if board[(i + pos) % 3] != move:
-            break
-    else:
-        return True
-
-    for i in range(3):
-        if board[3 * i + pos % 3] != move:
-            break
-    else:
-        return True
-
-    if pos in [0, 4, 8]:
-        for i in range(3):
-            if board[4 * i] != move:
-                break
-        else:
-            return True
-
-    if pos in [2, 4, 6]:
-        for i in range(3):
-            if board[2 * i + 2] != move:
-                break
-        else:
-            return True
-
-    return False
+def isWinner(move, board=TTTBoard):
+    return (board[0] == move and board[1] == move and board[2] == move) or (
+            board[3] == move and board[4] == move and board[5] == move) or (
+            board[6] == move and board[7] == move and board[8] == move) or (
+            board[0] == move and board[3] == move and board[6] == move) or (
+            board[1] == move and board[4] == move and board[7] == move) or (
+            board[2] == move and board[5] == move and board[8] == move) or (
+            board[0] == move and board[4] == move and board[8] == move) or (
+            board[2] == move and board[4] == move and board[6] == move)
 
 
 print("Tic Tac Toe\n")
 printBoard()
-
 
 def AIMove():
     possibleMoves = [x for x in range(0, 9) if TTTBoard[x] == ' ']
@@ -71,7 +51,7 @@ def AIMove():
         for i in possibleMoves:
             boardTemp = TTTBoard[:]
             boardTemp[i] = let
-            if isWinner(i, let, boardTemp):
+            if isWinner(let, boardTemp):
                 pos = i
                 return pos
 
@@ -96,18 +76,18 @@ while not isBoardFull():
     if 0 <= x <= 8 and posIsFree(x):
         insertAtPosition("X", x)
         printBoard()
-        if isWinner(x, "X"):
+        if isWinner("X"):
             print("\033[1mCongratulations \nYou Won The Game.\033[0m")
             break
 
-        print("AI is Thinking")
-        sleep(3)
+        print("AI is Thinking....")
+        sleep(2)
 
         position = AIMove()
         insertAtPosition("O", position)
         printBoard()
-        if isWinner(position, "O"):
-            print("\033[1mAI Wins The Game.\033[0m")
+        if isWinner("O"):
+            print("\033[1mAI Won The Game.\033[0m")
             break
 
         if isBoardFull():
