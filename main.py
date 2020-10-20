@@ -34,16 +34,17 @@ def isBoardFull():
 def isWinner(move, board=TTTBoard):
     return (board[0] == move and board[1] == move and board[2] == move) or (
             board[3] == move and board[4] == move and board[5] == move) or (
-            board[6] == move and board[7] == move and board[8] == move) or (
-            board[0] == move and board[3] == move and board[6] == move) or (
-            board[1] == move and board[4] == move and board[7] == move) or (
-            board[2] == move and board[5] == move and board[8] == move) or (
-            board[0] == move and board[4] == move and board[8] == move) or (
-            board[2] == move and board[4] == move and board[6] == move)
+                   board[6] == move and board[7] == move and board[8] == move) or (
+                   board[0] == move and board[3] == move and board[6] == move) or (
+                   board[1] == move and board[4] == move and board[7] == move) or (
+                   board[2] == move and board[5] == move and board[8] == move) or (
+                   board[0] == move and board[4] == move and board[8] == move) or (
+                   board[2] == move and board[4] == move and board[6] == move)
 
 
 print("Tic Tac Toe\n")
 printBoard()
+
 
 def AIMove():
     possibleMoves = [x for x in range(0, 9) if TTTBoard[x] == ' ']
@@ -80,8 +81,11 @@ while not isBoardFull():
             print("\033[1mCongratulations \nYou Won The Game.\033[0m")
             break
 
-        print("AI is Thinking....")
-        sleep(2)
+        print("AI is Thinking ", end="")
+        for i in range(0, 4):
+            print(".", end="")
+            sleep(0.5)
+        print()
 
         position = AIMove()
         insertAtPosition("O", position)
